@@ -9,6 +9,9 @@ const descriptions=[
 const normalize=s=>s.toLocaleLowerCase('ru').replaceAll('ё','е').replace(/\s+/g,' ').trim();
 function choose(index,clear=false){selected=index;if(clear)input.value='';design.src=`assets/section${index+1}.svg`;design.alt=descriptions[index];document.querySelectorAll('[data-section]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.section)===index)));location.hash=['section-1','section-2','section-3','round-table'][index];render();}
 function render(){const query=normalize(input.value),words=query.split(' ').filter(Boolean);body.replaceChildren();let matches=[];
+document.querySelector('#artwork').classList.toggle('searching',Boolean(query));
+design.alt=query?'Конференция «Первая ступень в науку». Поиск участников по всем разделам.':descriptions[selected];
+document.querySelector('caption').textContent=query?'РЕЗУЛЬТАТЫ ПОИСКА':'УЧАСТНИКИ ДИСКУССИИ';
 sections.forEach((section,index)=>{if(!query&&index!==selected)return;section.rows.forEach(row=>{const text=normalize(row.join(' '));if(words.every(word=>text.includes(word)))matches.push({row,index});});});
 status.hidden=!query;status.textContent=query?`Найдено выступлений: ${matches.length}. Поиск по всем четырём разделам.`:'';
 matches.forEach(({row,index})=>{const tr=document.createElement('tr');row.forEach((value,col)=>{const td=document.createElement('td');if(query&&col===0){const link=document.createElement('button');link.className='section-link';link.textContent=sections[index].label;link.addEventListener('click',()=>{choose(index,true);document.querySelector('#participants').scrollIntoView({behavior:'smooth'});});td.append(link);}td.append(document.createTextNode(value));tr.append(td);});body.append(tr);});
