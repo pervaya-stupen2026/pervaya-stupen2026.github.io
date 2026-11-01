@@ -10,3 +10,5 @@
 th{font-weight:700}th,td{text-align:center}.section-link{margin-left:auto;margin-right:auto}
 .section-team{margin:0 3.02% var(--team-gap,1.6cqw) 3.90625%;min-height:var(--team-height,30cqw);border:.364583333cqw solid #fe6e09;border-radius:1.40625cqw;background:#f9faf9;display:flex;flex-direction:column;justify-content:center;gap:.7cqw;padding:.8cqw 1.5cqw;text-align:center;font-size:1.927083333cqw;line-height:1.08}
 .section-team[hidden]{display:none}.team-group h2{font:italic 500 1.927083333cqw/1.15 Involve,Arial,sans-serif;margin:0 0 .85cqw}.team-person{margin:0 0 .8cqw}.team-person:last-child{margin-bottom:0}.team-person strong{font-weight:600}.team-role{display:block;font-style:italic;font-weight:400;white-space:pre-line}
+#section-online-link{position:absolute;left:13.5%;top:57.8cqw;width:73%;height:2.9cqw;cursor:pointer;border-radius:.2cqw}#section-online-link:hover{background:rgba(254,110,9,.07)}#section-online-link:focus-visible{outline:2px solid #fe6e09;outline-offset:2px}
+#round-table-date{margin:0 0 1.2cqw;text-align:center;font-size:2.34375cqw;line-height:1.2;font-weight:500}

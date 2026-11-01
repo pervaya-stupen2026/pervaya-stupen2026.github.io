@@ -29,6 +29,8 @@ group.append(person);
 }
 function render(){const query=normalize(input.value),words=query.split(' ').filter(Boolean);body.replaceChildren();let matches=[];
 document.querySelector('#artwork').classList.toggle('searching',Boolean(query));
+document.querySelector('#section-online-link').hidden=Boolean(query)||selected!==2;
+document.querySelector('#round-table-date').hidden=Boolean(query)||selected!==3;
 renderTeam(Boolean(query));
 design.alt=query?'Конференция «Первая ступень в науку». Поиск участников по всем разделам.':descriptions[selected];
 document.querySelector('caption').textContent=query?'РЕЗУЛЬТАТЫ ПОИСКА':'УЧАСТНИКИ ДИСКУССИИ';
