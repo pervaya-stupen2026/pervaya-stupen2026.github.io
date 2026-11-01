@@ -1,15 +1,35 @@
 let selected=0;
 const design=document.querySelector('#design'),input=document.querySelector('#search'),body=document.querySelector('#rows'),status=document.querySelector('#status');
 const descriptions=[
-'Секция 1. «Люди, команды, организации: в поисках современного менеджмента». 03.11.2026, аудитория 202, 10:10–13:20. Научный руководитель: Колесникова Виктория Юрьевна. Эксперты: Козинец Валерия, Сергеев Андрей Михайлович, Лоскутова Майя Алексеевна.',
+'Секция 1. «Люди, команды, организации: в поисках современного менеджмента». 03.11.2026, аудитория 202, 10:10–13:20.',
 'Секция 2. «Теория и практика: ускоренный путь в науку». Очно. 02.11.2026, аудитория 308, 10:10–13:20.',
 'Секция 3. «Цифровая экономика: вызовы нового времени». 03.11.2026, 12:00–14:00.',
 'Круглый стол. «День народного единства». Совместно со студенческим патриотическим клубом «Я горжусь». 03.11.2026, аудитория 302, 11:50–15:30.'
 ];
 const normalize=s=>s.toLocaleLowerCase('ru').replaceAll('ё','е').replace(/\s+/g,' ').trim();
-function choose(index,clear=false){selected=index;if(clear)input.value='';design.src=`assets/section${index+1}.svg`;design.alt=descriptions[index];document.querySelectorAll('[data-section]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.section)===index)));location.hash=['section-1','section-2','section-3','round-table'][index];render();}
+function choose(index,clear=false){selected=index;if(clear)input.value='';design.src=`assets/heading${index+1}.svg`;design.alt=descriptions[index];document.querySelectorAll('[data-section]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.section)===index)));location.hash=['section-1','section-2','section-3','round-table'][index];render();}
+function renderTeam(searching){
+const panel=document.querySelector('#team-panel'),section=sections[selected];
+panel.hidden=searching;
+panel.style.setProperty('--team-height',`${section.teamHeight/19.2}cqw`);
+panel.style.setProperty('--team-gap',`${section.teamGap/19.2}cqw`);
+panel.replaceChildren();
+for(const [key,label] of [['moderators','НАУЧНЫЕ РУКОВОДИТЕЛИ / МОДЕРАТОРЫ:'],['experts','ЭКСПЕРТЫ:']]){
+const entries=section.team?.[key]??[];if(!entries.length)continue;
+const group=document.createElement('div');group.className='team-group';
+const heading=document.createElement('h2');heading.textContent=label;group.append(heading);
+for(const value of entries){
+const person=document.createElement('p');person.className='team-person';
+const split=value.search(/[,\n]/),name=split<0?value:value.slice(0,split),role=split<0?'':value.slice(split+1).trim();
+const strong=document.createElement('strong');strong.textContent=name.trim().replace(/\s+ПОБАТЮШКЕ$/iu,'');person.append(strong);
+if(role){const description=document.createElement('span');description.className='team-role';description.textContent=role;person.append(description);}
+group.append(person);
+}panel.append(group);
+}
+}
 function render(){const query=normalize(input.value),words=query.split(' ').filter(Boolean);body.replaceChildren();let matches=[];
 document.querySelector('#artwork').classList.toggle('searching',Boolean(query));
+renderTeam(Boolean(query));
 design.alt=query?'Конференция «Первая ступень в науку». Поиск участников по всем разделам.':descriptions[selected];
 document.querySelector('caption').textContent=query?'РЕЗУЛЬТАТЫ ПОИСКА':'УЧАСТНИКИ ДИСКУССИИ';
 sections.forEach((section,index)=>{if(!query&&index!==selected)return;section.rows.forEach(row=>{const text=normalize(row.join(' '));if(words.every(word=>text.includes(word)))matches.push({row,index});});});
